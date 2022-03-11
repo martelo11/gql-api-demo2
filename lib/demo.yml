@@ -1,0 +1,8 @@
+log:
+  level: debug
+
+jetty:
+  # context: /graphql
+  connectors:
+    - port: 9000
+
