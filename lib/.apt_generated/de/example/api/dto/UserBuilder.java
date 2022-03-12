@@ -1,12 +1,8 @@
 package de.example.api.dto;
 
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import javax.annotation.concurrent.NotThreadSafe;
 import org.immutables.value.Generated;
 
 /**
@@ -18,14 +14,12 @@ import org.immutables.value.Generated;
  */
 @Generated(from = "UserDTO.user", generator = "Immutables")
 @SuppressWarnings({"all"})
-@ParametersAreNonnullByDefault
 @javax.annotation.processing.Generated("org.immutables.processor.ProxyProcessor")
-@NotThreadSafe
 public final class UserBuilder {
   private static final long INIT_BIT_DATA = 0x1L;
   private long initBits = 0x1L;
 
-  private @Nullable Object data;
+  private Object data;
 
   /**
    * Creates a {@code UserBuilder} factory builder.
@@ -43,7 +37,6 @@ public final class UserBuilder {
    * @param data The value for data 
    * @return {@code this} builder for use in a chained invocation
    */
-  @CanIgnoreReturnValue 
   public final UserBuilder data(Object data) {
     this.data = Objects.requireNonNull(data, "data");
     initBits &= ~INIT_BIT_DATA;
