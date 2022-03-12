@@ -58,6 +58,45 @@ GraphQL Server API available at:
 ```
 http://localhost:9000/graphql
 ```
+
+#### Test Demo API using Postman
+
+Request (Content-Type: application/json)
+```JSON
+{"query":"query GetUser { getServertime }","variables":{}}
+```
+Response
+```JSON
+{
+    "data": {
+        "getServertime": "2022-03-12T16:02:54.241Z"
+    }
+}
+```
+
+
+Request (Content-Type: application/json)
+```JSON
+{"query":"query GetUser {\r\n  getUser {\r\n    name\r\n    password\r\n\tbirthday\r\n    text\r\n    greeting\r\n  }\r\n}","variables":{}}
+```
+Response
+```JSON
+{
+    "data": {
+        "getUser": {
+            "name": "Myrtice Weber",
+            "password": "",
+            "birthday": "1972-05-08T10:45:43.084Z",
+            "text": "When Chuck Norris gives a method an argument, the method loses.",
+            "greeting": "Welcome Myrtice Weber!"
+        }
+    }
+}
+```
+
+The [Introspection Query](https://graphql.org/learn/introspection/) works as well.
+
+
 ### Development (Eclipse)
 
 Testet with
