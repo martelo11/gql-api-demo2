@@ -24,15 +24,15 @@ Working GraphQL API server application to demonstrate a technologie stack for ra
 
 
 * TODO
-	* Authentication & Authorization
+	* Authentication & Authorization (bootique-jersey - since 2.0 also includes JAX-RS HTTP client with various kinds of authentication (BASIC, OAuth2,etc.).)
 	* API Versioning with GraphQL (https://blog.logrocket.com/versioning-fields-graphql/)
 	* Custom Exception Handling according to GraphQL Spec
-	* Unit tests (https://bootique.io/docs/2.x/bootique-docs/)
+	* Unit tests (https://bootique.io/docs/2.x/bootique-docs/)?
 	* Built-in GraphQL Client?
 
 ### Run in IDE
 
-Import as gradle project
+Import as gradle project. (Use the */lib* sub folder as application path)
 
 Run ```de.example.api.Application``` as Java Application with Arguments ```--server --config=demo.yml```
 
@@ -46,7 +46,7 @@ $ GQL-API-Demo2>gradlew clean shadowJar
 
 Run Java JAR:
 ```
-$ GQL-API-Demo2>java -jar lib\build\libs\shadow-1.0-all.jar --server --config=demo.yml
+$ GQL-API-Demo2>java -jar lib\build\libs\shadow-1.0-all.jar --server --config=lib/demo.yml
 ```
 
 Available commands:

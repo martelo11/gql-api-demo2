@@ -47,12 +47,6 @@ dependencies {
     // Use JUnit test framework.
     testImplementation "junit:junit:4.13"
 
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    // api "org.apache.commons:commons-math3:3.6.1"
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation "com.google.guava:guava:29.0-jre"
-    
     // Immutables annotation processor
     annotationProcessor "org.immutables:value:$ImmutablesVersion"
     // Immutables are not included during runtime
@@ -64,19 +58,21 @@ dependencies {
  	// https://bootique.io/
     // https://bootique.io/docs/2.x/getting-started/
     implementation platform("io.bootique.bom:bootique-bom:$BootiqueVersion")
-    implementation "io.bootique.jersey:bootique-jersey:$BootiqueVersion"
-    implementation "io.bootique.logback:bootique-logback:$BootiqueVersion"
 
     implementation (
+    	// Google Gaava
+    	"com.google.guava:guava:29.0-jre",
+    	
      	// Bootique Jersey (Integrates JAX-RS server as a servlet)
         "io.bootique.jersey:bootique-jersey:$BootiqueVersion",
+        "io.bootique.logback:bootique-logback:$BootiqueVersion",
+
+    	// Fix (MessageBodyWriter not found exception)
+    	"org.glassfish.jersey.media:jersey-media-json-jackson:2.35",
         
     	// SPQR
     	"io.leangen.graphql:spqr:$SPQRVersion",
     
-    	// Fix (MessageBodyWriter not found exception)
-    	"org.glassfish.jersey.media:jersey-media-json-jackson:2.35",
-    	
     	// Java Faker (Random Data Generator)
     	"com.github.javafaker:javafaker:$JavaFakerVersion"
     )
