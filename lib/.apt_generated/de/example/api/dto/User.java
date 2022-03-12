@@ -1,19 +1,13 @@
 package de.example.api.dto;
 
 import com.google.common.base.MoreObjects;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import com.google.errorprone.annotations.Var;
 import de.example.api.spqr.annotation.APIAuth;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.NotThreadSafe;
 import org.immutables.value.Generated;
 
 /**
@@ -24,10 +18,7 @@ import org.immutables.value.Generated;
  */
 @Generated(from = "UserDTO", generator = "Immutables")
 @SuppressWarnings({"all"})
-@ParametersAreNonnullByDefault
 @javax.annotation.processing.Generated("org.immutables.processor.ProxyProcessor")
-@Immutable
-@CheckReturnValue
 public final class User implements UserDTO {
   private final String name;
   private final String password;
@@ -93,7 +84,7 @@ public final class User implements UserDTO {
    * @return {@code true} if {@code this} is equal to {@code another} instance
    */
   @Override
-  public boolean equals(@Nullable Object another) {
+  public boolean equals(Object another) {
     if (this == another) return true;
     return another instanceof User
         && equalTo((User) another);
@@ -112,7 +103,7 @@ public final class User implements UserDTO {
    */
   @Override
   public int hashCode() {
-    @Var int h = 5381;
+    int h = 5381;
     h += (h << 5) + name.hashCode();
     h += (h << 5) + password.hashCode();
     h += (h << 5) + birthday.hashCode();
@@ -171,17 +162,16 @@ public final class User implements UserDTO {
    * but instead used immediately to create instances.</em>
    */
   @Generated(from = "UserDTO", generator = "Immutables")
-  @NotThreadSafe
   public static final class Builder {
     private static final long INIT_BIT_NAME = 0x1L;
     private static final long INIT_BIT_PASSWORD = 0x2L;
     private static final long INIT_BIT_BIRTHDAY = 0x4L;
     private long initBits = 0x7L;
 
-    private @Nullable String name;
-    private @Nullable String password;
-    private @Nullable Timestamp birthday;
-    private @Nullable String text;
+    private String name;
+    private String password;
+    private Timestamp birthday;
+    private String text;
 
     private Builder() {
     }
@@ -193,7 +183,6 @@ public final class User implements UserDTO {
      * @param instance The instance from which to copy values
      * @return {@code this} builder for use in a chained invocation
      */
-    @CanIgnoreReturnValue 
     public final Builder from(UserDTO instance) {
       Objects.requireNonNull(instance, "instance");
       name(instance.getName());
@@ -211,7 +200,6 @@ public final class User implements UserDTO {
      * @param name The value for name 
      * @return {@code this} builder for use in a chained invocation
      */
-    @CanIgnoreReturnValue 
     public final Builder name(String name) {
       this.name = Objects.requireNonNull(name, "name");
       initBits &= ~INIT_BIT_NAME;
@@ -223,7 +211,6 @@ public final class User implements UserDTO {
      * @param password The value for password 
      * @return {@code this} builder for use in a chained invocation
      */
-    @CanIgnoreReturnValue 
     public final Builder password(String password) {
       this.password = Objects.requireNonNull(password, "password");
       initBits &= ~INIT_BIT_PASSWORD;
@@ -235,7 +222,6 @@ public final class User implements UserDTO {
      * @param birthday The value for birthday 
      * @return {@code this} builder for use in a chained invocation
      */
-    @CanIgnoreReturnValue 
     public final Builder birthday(Timestamp birthday) {
       this.birthday = Objects.requireNonNull(birthday, "birthday");
       initBits &= ~INIT_BIT_BIRTHDAY;
@@ -247,7 +233,6 @@ public final class User implements UserDTO {
      * @param text The value for text (can be {@code null})
      * @return {@code this} builder for use in a chained invocation
      */
-    @CanIgnoreReturnValue 
     public final Builder text(@Nullable String text) {
       this.text = text;
       return this;
