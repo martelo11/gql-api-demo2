@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 
 import com.github.javafaker.Faker;
 
+import de.example.api.dto.AddressBuilder;
+import de.example.api.dto.PersonalData;
 import de.example.api.dto.User;
 import de.example.api.dto.UserDTO.UserRole;
 import de.example.api.spqr.GQLExecutionContext;
@@ -30,20 +32,21 @@ public class UserService {
 
     /** Provide a ROOT Resolver */
     @GraphQLQuery(name = "getServertime")
-    public Timestamp getServertime() {
+    public Timestamp resolveServertime() {
         return new Timestamp(new Date().getTime());
     }
 
     /** Provide a ROOT resolver */
     @GraphQLQuery(name = "getUser")
-    public DataFetcherResult<User> getUser(@GraphQLRootContext final GQLExecutionContext context) {
+    public DataFetcherResult<User> resolveUser(@GraphQLRootContext final GQLExecutionContext context) {
+        User user1 = User.of(data.name().fullName(), "TODO", new Timestamp(data.date().birthday().getTime()), data.chuckNorris().fact(),
+                             PersonalData.of(new AddressBuilder().data(data.address()).build(),
+                                             data.business().creditCardNumber(),
+                                             data.business().creditCardType(),
+                                             data.business().creditCardExpiry()));
+
         return DataFetcherResult.<User> newResult()
-                                .data(User.builder()
-                                          .name(data.name().fullName())
-                                          .birthday(new Timestamp(data.date().birthday().getTime()))
-                                          .text(data.chuckNorris().fact())
-                                          .password("")
-                                          .build())
+                                .data(user1)
                                 // .errors(toGraphQLErrors(result.allMessages()))
                                 .build();
     }
@@ -51,7 +54,7 @@ public class UserService {
     /** Provide a resolver for {@link User}.greeting */
     @APIAuth(requiredUserRole = UserRole.ADMIN)
     @GraphQLQuery(name = "greeting")
-    public String resolveItemAccess(@Nonnull @GraphQLContext User user, @GraphQLRootContext final GQLExecutionContext context) {
+    public String resolveGreeting(@Nonnull @GraphQLContext User user, @GraphQLRootContext final GQLExecutionContext context) {
         // Here we may call another (external) service API ...
         return "Welcome " + user.getName() + "!";
     }

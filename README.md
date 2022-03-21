@@ -4,7 +4,7 @@ Working GraphQL API server application to demonstrate a technologie stack for ra
 
 * [Java](https://www.oracle.com/java/)
 * [SPQR](https://github.com/leangen/graphql-spqr) Rapid development of GraphQL APIs in Java
-* [Immutables](https://immutables.github.io/) Java annotation processors to generate DTOs
+* [Immutables](https://immutables.github.io/) Java annotation processors to generate DTOs with Builders, Factory and Fluent API.
 * [Java Faker](https://github.com/joostvanwollingen/java-faker) Random Data Generator
 * [Bootique Jersey](https://bootique.io/) A minimally opinionated framework for runnable Java apps, Integrates JAX-RS server as a servlet
 * [Gradle](https://gradle.org/) Build & dependency management
@@ -24,19 +24,24 @@ Working GraphQL API server application to demonstrate a technologie stack for ra
 
 
 * TODO
+	* Add GraphQL union and interface types, add a mutation
+	* GraphQL schema stitching?
+	* Add repository & dataloader (batch dataloader, index pageing limit parameters)
 	* Authentication & Authorization (bootique-jersey - since 2.0 also includes JAX-RS HTTP client with various kinds of authentication (BASIC, OAuth2,etc.).)
+	* Add possibility for client authorization (hash code check?), implement limitter for complex requests.
 	* API Versioning with GraphQL (https://blog.logrocket.com/versioning-fields-graphql/)
 	* Custom Exception Handling according to GraphQL Spec
 	* Unit tests (https://bootique.io/docs/2.x/bootique-docs/)?
 	* Built-in GraphQL Client?
+	* Use JAR inside 'fat' JAR packaging structure
 
-### Run in IDE
+### ⚡️ Run in IDE
 
 Import as gradle project. (Use the */lib* sub folder as application path)
 
 Run ```de.example.api.Application``` as Java Application with Arguments ```--server --config=demo.yml```
 
-### Run Demo as JAR
+### 🚀 Run Demo as JAR
 
 Build 'fat' JAR with Shadow Gradle Plugin:
 
@@ -63,7 +68,9 @@ http://localhost:9000/graphql
 
 Request (Content-Type: application/json)
 ```JSON
-{"query":"query GetUser { getServertime }","variables":{}}
+{"query": 
+	"query GetUser { getServertime }"
+}
 ```
 Response
 ```JSON
@@ -77,18 +84,48 @@ Response
 
 Request (Content-Type: application/json)
 ```JSON
-{"query":"query GetUser {\r\n  getUser {\r\n    name\r\n    password\r\n\tbirthday\r\n    text\r\n    greeting\r\n  }\r\n}","variables":{}}
+{"query":
+	"query GetUser {  
+		getUser {	
+			 	name
+			    password
+				birthday
+			    text
+			    greeting
+			    personal {
+			        creditCardNumber
+			        creditCardExpiry
+			        address {
+			           fullName 
+			           streetName
+			            cityName
+			            country
+    		    }
+    		}
+		}
+	}"
+}
 ```
 Response
 ```JSON
 {
     "data": {
         "getUser": {
-            "name": "Myrtice Weber",
-            "password": "",
-            "birthday": "1972-05-08T10:45:43.084Z",
-            "text": "When Chuck Norris gives a method an argument, the method loses.",
-            "greeting": "Welcome Myrtice Weber!"
+            "name": "Ethan Skiles II",
+            "password": "TODO",
+            "birthday": "1996-10-12T21:25:18.599Z",
+            "text": "Chuck Norris's keyboard doesn't have a Ctrl key because nothing controls Chuck Norris.",
+            "greeting": "Welcome Ethan Skiles II!",
+            "personal": {
+                "creditCardNumber": "1211-1221-1234-2201",
+                "creditCardExpiry": "2012-11-12",
+                "address": {
+                    "fullName": "Asha Ernser",
+                    "streetName": "5344 Cronin Lock 848",
+                    "cityName": "Leathashire",
+                    "country": "Aruba"
+                }
+            }
         }
     }
 }
@@ -97,7 +134,7 @@ Response
 The [Introspection Query](https://graphql.org/learn/introspection/) works as well.
 
 
-### Development (Eclipse)
+### 🛠 Configuring for Development (Eclipse)
 
 Testet with
 ```CMD
