@@ -40,10 +40,8 @@ public class UserService {
     @GraphQLQuery(name = "getUser")
     public DataFetcherResult<User> resolveUser(@GraphQLRootContext final GQLExecutionContext context) {
         User user1 = User.of(data.name().fullName(), "TODO", new Timestamp(data.date().birthday().getTime()), data.chuckNorris().fact(),
-                             PersonalData.of(new AddressBuilder().data(data.address()).build(),
-                                             data.business().creditCardNumber(),
-                                             data.business().creditCardType(),
-                                             data.business().creditCardExpiry()));
+                             PersonalData.of(new AddressBuilder().data(data.address()).build(), data.business().creditCardNumber(),
+                                             data.business().creditCardType(), data.business().creditCardExpiry(), data.crypto()));
 
         return DataFetcherResult.<User> newResult()
                                 .data(user1)

@@ -85,25 +85,24 @@ Response
 Request (Content-Type: application/json)
 ```JSON
 {"query":
-	"query GetUser {  
-		getUser {	
-			 	name
-			    password
-				birthday
-			    text
-			    greeting
-			    personal {
-			        creditCardNumber
-			        creditCardExpiry
-			        address {
-			           fullName 
-			           streetName
-			            cityName
-			            country
-    		    }
-    		}
-		}
-	}"
+	"query GetUser {	getUser {
+					name
+					password
+					birthday
+					text
+					greeting
+					personal {
+						creditCardNumber
+						creditCardExpiry
+						address {
+							fullName 
+							streetName
+							cityName
+							country
+						}
+					}
+				}
+	"}"
 }
 ```
 Response

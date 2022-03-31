@@ -1,5 +1,6 @@
 package de.example.api.spqr;
 
+import java.lang.reflect.AnnotatedType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Crypto;
+import com.github.javafaker.Faker;
 import com.google.common.collect.Maps;
 
 import de.example.api.dto.UserDTO.UserRole;
@@ -25,10 +28,18 @@ import graphql.schema.GraphQLFieldsContainer;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaPrinter;
 import graphql.schema.visibility.GraphqlFieldVisibility;
+import io.leangen.geantyref.GenericTypeReflector;
 import io.leangen.graphql.GraphQLRuntime;
 import io.leangen.graphql.GraphQLSchemaGenerator;
+import io.leangen.graphql.execution.GlobalEnvironment;
+import io.leangen.graphql.execution.InvocationContext;
+import io.leangen.graphql.execution.ResolutionEnvironment;
+import io.leangen.graphql.execution.ResolverInterceptor;
+import io.leangen.graphql.generator.mapping.AbstractTypeAdapter;
 import io.leangen.graphql.metadata.strategy.query.AnnotatedResolverBuilder;
+import io.leangen.graphql.metadata.strategy.value.ValueMapper;
 import io.leangen.graphql.metadata.strategy.value.jackson.JacksonValueMapperFactory;
+import io.leangen.graphql.module.Module;
 
 /**
  * Singleton: {@link GraphQL} schema generator and provider.
@@ -72,6 +83,7 @@ public class GQLSchemaProvider {
                                                                     .withBasePackages("de.example.api.dto")
                                                                     // register type mapper
                                                                     .withTypeMappers(new GQLTypeMapper())
+                                                                    .withTypeAdapters(new CryptoTypeAdapter())
                                                                     // Custom Jackson factory to exclude NULL values
                                                                     .withValueMapperFactory(valueMapperFactory)
                                                                     // register the services
@@ -169,6 +181,69 @@ public class GQLSchemaProvider {
                 return requiredUserType.get().getValue().equals(pUserRole);
             }
             return true;
+        }
+    }
+    
+    /**
+     * SPQR type adapter for input & output converting of {@link Crypto} type to {@link Integer}.
+     * <ul>
+     * <li>T - The actual argument type of an exposed method
+     * <li>S - The substitute type as which the argument values are to be deserialized
+     * </ul>
+     * 
+     */
+    public static class CryptoTypeAdapter extends AbstractTypeAdapter<Crypto, Integer> {
+
+        /** Fake data provider */
+        final static Faker data = new Faker();
+
+        @Override
+        public Crypto convertInput(Integer substitute, AnnotatedType type, GlobalEnvironment environment, ValueMapper valueMapper) {
+            // data faker can not be instanziated with values / deserialized
+            // TODO convert Integer to Crypto
+            return data.crypto();
+        }
+
+        @Override
+        public Integer convertOutput(Crypto original, AnnotatedType type, ResolutionEnvironment resolutionEnvironment) {
+            return original.hashCode();
+        }
+
+        @Override
+        public boolean supports(AnnotatedType type) {
+            return GenericTypeReflector.isSuperType(Crypto.class, type.getType());
+        }
+
+    }
+
+    /**
+     * TODO check usage of the {@link Module} interface
+     * 
+     * @see "https://github.com/leangen/graphql-spqr-modules"
+     */
+    @SuppressWarnings("unused")
+    private static class GraphQLSchemaModule implements Module {
+
+        @Override
+        public void setUp(SetupContext context) {
+        }
+
+    }
+
+    /**
+     * TODO Timer intercepter for any metrics implementation.
+     *
+     * @see "https://github.com/leangen/graphql-spqr/issues/317"
+     * @see "https://micrometer.io/docs/concepts"
+     */
+    public static class TimerInterceptor implements ResolverInterceptor {
+
+        @Override
+        public Object aroundInvoke(InvocationContext context, Continuation continuation) throws Exception {
+            // start metric
+            Object result = continuation.proceed(context); // execute the resolver. maybe add try/finally?
+            // end metric
+            return result;
         }
     }
 }
