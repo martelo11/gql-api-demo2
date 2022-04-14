@@ -2,7 +2,9 @@ log:
   level: debug
 
 jetty:
-  # context: /graphql
+  # context: /gui
   connectors:
     - port: 9000
-
+  # the path can be either a directory on the filesystem or a classpath
+  # https://bootique.io/docs/2.x/bootique-jetty-docs/#serving-static-files
+  # staticResourceBase: "classpath:WEB-INF/graphiql"

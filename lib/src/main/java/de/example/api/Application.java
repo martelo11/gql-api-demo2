@@ -1,3 +1,4 @@
+
 package de.example.api;
 
 import de.example.api.spqr.GQLSchemaProvider;
@@ -16,14 +17,19 @@ import io.bootique.jetty.JettyModule;
 public class Application extends BaseModule {
 
     public static void main(String[] args) {
-        // Explicit loading of jetty server module (needed to be recognised when running as shadow jar).
-        Bootique.app(args).autoLoadModules().module(Application.class).module(JettyModule.class).exec().exit();
+        Bootique.app(args)
+                .autoLoadModules()
+                .module(Application.class)
+                // Explicit loading of jetty server module (needed to be recognised when running as shadow jar)
+                .module(JettyModule.class)
+                .exec()
+                .exit();
     }
 
     @Override
     public void configure(Binder binder) {
         // register resources (endpoint)
-        JerseyModule.extend(binder).addResource(GQLEndpoint.class);
+        JerseyModule.extend(binder).addResource(GQLEndpoint.class).addResource(RESTEndpoint.class);
         // call GraphQL schema generation
         GQLSchemaProvider.get().generate();
     }
