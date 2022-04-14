@@ -9,7 +9,7 @@ Working GraphQL API server application to demonstrate a technologie stack for ra
 * [Bootique Jersey](https://bootique.io/) A minimally opinionated framework for runnable Java apps, Integrates JAX-RS server as a servlet
 * [Gradle](https://gradle.org/) Build & dependency management
 
-### Implemented Showcases / Concepts
+## Implemented Showcases / Concepts
 
 * *GQLSchemaProvider.java* Code-first approach - automatic GraphQl schema generation (also modifications of runtime processing).
 * *GQLEndpoint.java* GraphQL API endpoint using JAX-RS API.
@@ -26,7 +26,7 @@ Working GraphQL API server application to demonstrate a technologie stack for ra
 * TODO
 	* Add GraphQL union and interface types, add a mutation
 	* GraphQL schema stitching?
-	* Add repository & dataloader (batch dataloader, index pageing limit parameters)
+	* Add repository & dataloader [batch dataloader, index pageing limit parameters](https://github.com/leangen/graphql-spqr/issues/182)
 	* Authentication & Authorization (bootique-jersey - since 2.0 also includes JAX-RS HTTP client with various kinds of authentication (BASIC, OAuth2,etc.).)
 	* Add possibility for client authorization (hash code check?), implement limitter for complex requests.
 	* API Versioning with GraphQL (https://blog.logrocket.com/versioning-fields-graphql/)
@@ -35,13 +35,13 @@ Working GraphQL API server application to demonstrate a technologie stack for ra
 	* Built-in GraphQL Client?
 	* Use JAR inside 'fat' JAR packaging structure
 
-### ⚡️ Run in IDE
+## ⚡️ Run in IDE
 
 Import as gradle project. (Use the */lib* sub folder as application path)
 
 Run ```de.example.api.Application``` as Java Application with Arguments ```--server --config=demo.yml```
 
-### 🚀 Run Demo as JAR
+## 🚀 Run Demo as JAR
 
 Build 'fat' JAR with Shadow Gradle Plugin:
 
@@ -64,7 +64,7 @@ GraphQL Server API available at:
 http://localhost:9000/graphql
 ```
 
-#### Test Demo API using Postman
+### Test Demo API using Postman
 
 Request (Content-Type: application/json)
 ```JSON
@@ -133,7 +133,7 @@ Response
 The [Introspection Query](https://graphql.org/learn/introspection/) works as well.
 
 
-### 🛠 Configuring for Development (Eclipse)
+## 🛠 Configuring for Development
 
 Testet with
 ```CMD
@@ -151,13 +151,23 @@ JVM:          11.0.11 (Oracle Corporation 11.0.11+9-LTS-194)
 OS:           Windows 10 10.0 amd64
 ```
 
+### Eclipse Annotation Processor
+
 In order to use immutables, the AnnotationProcessor needs to be configured in IDE propperly:
 
 * Eclipse IDE
 	* Enable Annotation processing 
-	* Set Factory Path to ´´´M2_REPO/org/immutables/value/2.7.5/value-2.7.5.jar´´´
+	* Set Factory Path to ```M2_REPO/org/immutables/value/2.7.5/value-2.7.5.jar```
 
-### Known Issues
+### Tracing Bootique Startup
+
+To see what modules are loaded, to view full app configuration tree and to trace other events that happen on startup, run your app with ```-Dbq.trace``` option. See [Documentation](https://bootique.io/docs/2.x/bootique-docs/#_tracing_bootique_startup)
+
+```
+$ GQL-API-Demo2>java -Dbq.trace -jar lib\build\libs\shadow-1.0-all.jar
+```
+
+## Known Issues
 
 Issue | Solution
 ------ | ----------

@@ -25,6 +25,12 @@ sourceSets {
     main.resources.srcDir "src/main/resources"
 }
 
+// Fix 'fake duplicates' issue
+// https://github.com/gradle/gradle/issues/17236
+tasks.withType(Copy).all {
+    duplicatesStrategy 'exclude'
+}
+  
 tasks.jar {
     manifest.attributes["Main-Class"] = "de.example.api.Application"
 }
@@ -46,7 +52,9 @@ repositories {
 
 dependencies {
     // Use JUnit test framework.
-    testImplementation "junit:junit:4.13"
+    testImplementation "junit:junit:4.13.x"
+    testImplementation "io.bootique:bootique-test:$BootiqueVersion"
+    testImplementation "io.bootique.jetty:bootique-jetty-junit5:$BootiqueVersion"
 
     // Immutables annotation processor
     annotationProcessor "org.immutables:value:$ImmutablesVersion"
@@ -67,6 +75,11 @@ dependencies {
      	// Bootique Jersey (Integrates JAX-RS server as a servlet)
         "io.bootique.jersey:bootique-jersey:$BootiqueVersion",
         "io.bootique.logback:bootique-logback:$BootiqueVersion",
+        // TODO Metrics and Healthchecks
+        // "io.bootique.jetty:bootique-jetty-instrumented"
+        // TODO Support for CORS
+        // configure rules in YAML under "jettycors" root element (see details https://bootique.io/docs/2.x/bootique-jetty-docs/#jettycors).
+        // "io.bootique.jetty:bootique-jetty-cors"
 
     	// Fix (MessageBodyWriter not found exception)
     	"org.glassfish.jersey.media:jersey-media-json-jackson:2.35",
@@ -77,4 +90,10 @@ dependencies {
     	// Java Faker (Random Data Generator)
     	"com.github.javafaker:javafaker:$JavaFakerVersion"
     )
+    
+    // add resource path to classpath (to make WEB-INF available)
+    // lib\build\resources\main\WEB-INF\graphiql
+    // lib/bin/main/WEB-INF\graphiql
+    // implementation files('lib/bin/main')
+    implementation files('bin/main')
 }

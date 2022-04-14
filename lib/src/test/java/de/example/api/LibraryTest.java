@@ -4,15 +4,48 @@
 
 package de.example.api;
 
+import javax.ws.rs.core.Response;
+
+import org.junit.Test;
+import org.junit.platform.commons.annotation.Testable;
+
+import io.bootique.BQRuntime;
+import io.bootique.Bootique;
+import io.bootique.jetty.junit5.JettyTester;
+import io.bootique.junit5.BQApp;
+import io.bootique.junit5.BQTest;
+
 /**
  * TODO: unit test API
  * <p>
- * <li>Unit tests with bootique (https://bootique.io/docs/2.x/bootique-docs/)
- * <li>Use REST client to test (https://www.baeldung.com/jersey-jax-rs-client)
+ * <li><a href="https://bootique.io/docs/2.x/bootique-docs/">Unit tests with bootique</a>
+ * <li><a href="https://www.baeldung.com/jersey-jax-rs-client/">Use REST client to test</a>
+ * <li><a href="https://blog.escape.tech/testing-your-graphql-api/">How to test GraphQL APIs</a>
  *
  * @author Thomas Fritsche
  * @since 08.03.2022
  */
+@Testable
+@BQTest
+// @BQTestScope.TEST_CLASS
 public class LibraryTest {
 
+    static final JettyTester jetty = JettyTester.create();
+    // @BQApp
+    // static final BQRuntime app = Bootique.app("--server").module(jetty.moduleReplacingConnectors()).createRuntime();
+    @BQApp
+    final static BQRuntime app = Bootique.app("--server", "--config", "classpath:demo.yml").autoLoadModules().createRuntime();
+
+    @Test
+    
+    public void testServer() {
+        Response response = jetty.getTarget().path("/graphql").request().get();
+        JettyTester.assertOk(response);
+    }
+
+    @Test
+    // @BQTestScope.TEST_METHOD
+    public void testAutoLoadable() {
+        // BQModuleProviderChecker.testAutoLoadable(Application.class);
+    }
 }

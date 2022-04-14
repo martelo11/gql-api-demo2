@@ -134,7 +134,7 @@ public class GQLSchemaProvider {
                                                                   .includeDirectives(false)
                                                                   .includeIntrospectionTypes(false)
                                                                   .includeSchemaDefinition(true)).print(schema);
-        LOG.info("Generated GraphQL schema for [" + userRole + "]:\n" + schemaStr);
+        LOG.info("Generated GraphQL schema for [UserRole: " + userRole + "]:\n" + schemaStr);
     }
 
     /**
@@ -199,7 +199,7 @@ public class GQLSchemaProvider {
 
         @Override
         public Crypto convertInput(Integer substitute, AnnotatedType type, GlobalEnvironment environment, ValueMapper valueMapper) {
-            // data faker can not be instanziated with values / deserialized
+            // data faker can not be initialized with values, so create a new value instead.
             // TODO convert Integer to Crypto
             return data.crypto();
         }
